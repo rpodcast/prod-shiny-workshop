@@ -1,8 +1,8 @@
 baseURL: /
 theme: hugo-apero
 languageCode: en
-title: Hugo Apéro
-author: Alison Hill
+title: Building Production-Grade Shiny Applications
+author: Eric Nantz
 copyright: ''
 googleAnalytics: ''
 disqusShortname: ''
@@ -52,22 +52,7 @@ params:
   social:
     - icon: github
       icon_pack: fab
-      url: https://github.com/apreshill/apero
-    - icon: facebook-square
-      icon_pack: fab
-      url: https://www.facebook.com/hashtag/ap%C3%A9ro
-    - icon: instagram
-      icon_pack: fab
-      url: https://www.instagram.com/explore/tags/apero/
-    - icon: twitter
-      icon_pack: fab
-      url: https://twitter.com/hashtag/apéro
-    - icon: impactstory
-      icon_pack: ai
-      url: https://impactstory.org/u/0000-0002-8082-1890
-    - icon: orcid
-      icon_pack: ai
-      url: http://orcid.org/0000-0002-8082-1890
+      url: https://github.com/arpodcast/prod-shiny-workshop
     - icon: rss
       icon_pack: fas
       url: /blog/index.xml
@@ -75,13 +60,13 @@ params:
   socialInHeader: no
   textFontFamily: sans-serif
   theme: sky
-  twitter: apreshill
+  twitter: theRcast
   utterances:
     issue_term: pathname
     label: 'comments :crystal_ball:'
-    repo_name: apreshill/apero
+    repo_name: rpodcast/prod-shiny-workshop
     theme: boxy-light
-    use_utterances: yes
+    use_utterances: no
 taxonomies:
   category: categories
   series: series
@@ -127,24 +112,24 @@ menu:
       weight: 6
 privacy:
   disqus:
-    disable: no
+    disable: yes
   googleAnalytics:
     anonymizeIP: yes
     disable: no
     respectDoNotTrack: yes
   instagram:
-    disable: no
+    disable: yes
     simple: yes
   twitter:
-    disable: no
+    disable: yes
     enableDNT: yes
     simple: no
   vimeo:
-    disable: no
+    disable: yes
     enableDNT: yes
     simple: yes
   youtube:
-    disable: no
+    disable: yes
     privacyEnhanced: yes
 security:
   funcs:
