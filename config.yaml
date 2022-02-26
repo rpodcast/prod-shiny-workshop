@@ -1,0 +1,139 @@
+baseURL: /
+theme: hugo-apero
+languageCode: en
+title: Building Production-Grade Shiny Applications
+author: Eric Nantz
+copyright: ''
+googleAnalytics: ''
+disqusShortname: ''
+metaDataFormat: yaml
+footnoteReturnLinkContents: '&#8617;'
+paginate: 5
+preserveTaxonomyNames: yes
+ignoreFiles:
+  - \.Rmd$
+  - \.Rmarkdown$
+  - _cache$
+  - \.knit\.md$
+  - \.utf8\.md$
+  - "(^|/)renv$"
+  - "renv\\.lock$"
+enableEmoji: yes
+markup:
+  defaultMarkdownHandler: goldmark
+  goldmark:
+    renderer:
+      hardwraps: no
+      unsafe: yes
+  highlight:
+    style: github
+  tableOfContents:
+    endLevel: 2
+    ordered: no
+    startLevel: 2
+params:
+  custom_theme: ''
+  customheadingFontFamily: Fraunces
+  customtextFontFamily: Commissioner
+  description: A modern, beautiful, and easily configurable blog theme for Hugo.
+  favicon: /img/favicon.ico
+  headingFontFamily: sans-serif
+  logo: /img/blogophonic-mark-dark.png
+  mainSections:
+    - blog
+    - project
+    - talk
+  math:
+    renderer: katex
+  navallcaps: yes
+  orgLocal: Anywhere
+  orgName: RStudio
+  sharing_image: /img/papillons.jpg
+  social:
+    - icon: github
+      icon_pack: fab
+      url: https://github.com/arpodcast/prod-shiny-workshop
+    - icon: rss
+      icon_pack: fas
+      url: /blog/index.xml
+  socialInFooter: yes
+  socialInHeader: no
+  textFontFamily: sans-serif
+  theme: sky
+  twitter: theRcast
+  utterances:
+    issue_term: pathname
+    label: 'comments :crystal_ball:'
+    repo_name: rpodcast/prod-shiny-workshop
+    theme: boxy-light
+    use_utterances: no
+taxonomies:
+  category: categories
+  series: series
+  tag: tags
+menu:
+  footer:
+    - name: License
+      title: License
+      url: /license/
+      weight: 1
+    - name: Contact
+      title: Contact form
+      url: /contact/
+      weight: 2
+    - name: Contributors
+      title: Contributors
+      url: /contributors/
+      weight: 3
+  header:
+    - name: About
+      title: About Blogophonic
+      url: /about/
+      weight: 1
+    - name: Blog
+      title: Blog
+      url: /blog/
+      weight: 2
+    - name: Projects
+      title: Project Portfolio
+      url: /project/
+      weight: 3
+    - name: Talks
+      title: Talks
+      url: /talk/
+      weight: 4
+    - name: A collection
+      title: A collection
+      url: /collection/
+      weight: 5
+    - name: Elements
+      title: Element Page
+      url: /elements/
+      weight: 6
+privacy:
+  disqus:
+    disable: yes
+  googleAnalytics:
+    anonymizeIP: yes
+    disable: no
+    respectDoNotTrack: yes
+  instagram:
+    disable: yes
+    simple: yes
+  twitter:
+    disable: yes
+    enableDNT: yes
+    simple: no
+  vimeo:
+    disable: yes
+    enableDNT: yes
+    simple: yes
+  youtube:
+    disable: yes
+    privacyEnhanced: yes
+security:
+  funcs:
+    getenv:
+      - ^HUGO_
+      - ^WC_
+      - "^BLOGDOWN_"
