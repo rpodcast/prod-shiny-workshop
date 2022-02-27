@@ -33,22 +33,23 @@ markup:
     startLevel: 2
 params:
   custom_theme: ''
-  customheadingFontFamily: Fraunces
-  customtextFontFamily: Commissioner
-  description: A modern, beautiful, and easily configurable blog theme for Hugo.
+  customheadingFontFamily: "Atkinson Hyperlegible"
+  customtextFontFamily: Metropolis
+  description: "Building Production-Grade Shiny Applications - Workshop at the 2022 rstudio::conf"
   favicon: /img/favicon.ico
   headingFontFamily: sans-serif
-  logo: /img/blogophonic-mark-dark.png
+  logo: /img/shinydevseries_hex.png
   mainSections:
     - blog
     - project
     - talk
+    - materials
   math:
     renderer: katex
   navallcaps: yes
-  orgLocal: Anywhere
+  orgLocal: "rstudio::conf 2022"
   orgName: RStudio
-  sharing_image: /img/papillons.jpg
+  sharing_image: /img/rsconf_pic.jpg
   social:
     - icon: github
       icon_pack: fab
@@ -77,39 +78,19 @@ menu:
       title: License
       url: /license/
       weight: 1
-    - name: Contact
-      title: Contact form
-      url: /contact/
+    - name: Code of Conduct
+      title: Code of Conduct
+      url: /code-of-conduct
       weight: 2
-    - name: Contributors
-      title: Contributors
-      url: /contributors/
-      weight: 3
   header:
     - name: About
-      title: About Blogophonic
+      title: About
       url: /about/
       weight: 1
-    - name: Blog
-      title: Blog
-      url: /blog/
+    - name: Materials
+      title: Materials
+      url: /materials/
       weight: 2
-    - name: Projects
-      title: Project Portfolio
-      url: /project/
-      weight: 3
-    - name: Talks
-      title: Talks
-      url: /talk/
-      weight: 4
-    - name: A collection
-      title: A collection
-      url: /collection/
-      weight: 5
-    - name: Elements
-      title: Element Page
-      url: /elements/
-      weight: 6
 privacy:
   disqus:
     disable: yes

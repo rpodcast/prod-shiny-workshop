@@ -1,7 +1,9 @@
 ---
 author: Alison Hill
+type: collection
 cascade:
   layout: single-series
+  type: collection
   sidebar:
     author: Alison Hill
     description: "Sometimes you want a souped-up series- a bundle of related pages
