@@ -1,7 +1,7 @@
 baseURL: /
 theme: hugo-apero
 languageCode: en
-title: Building Production-Grade Shiny Applications
+title: Building Production-Quality Shiny Applications
 author: Eric Nantz
 copyright: ''
 googleAnalytics: ''
@@ -35,7 +35,7 @@ params:
   custom_theme: ''
   customheadingFontFamily: "Atkinson Hyperlegible"
   customtextFontFamily: Metropolis
-  description: "Building Production-Grade Shiny Applications - Workshop at the 2022 rstudio::conf"
+  description: "Building Production-Quality Shiny Applications - Workshop at the 2022 rstudio::conf"
   favicon: /img/favicon.ico
   headingFontFamily: sans-serif
   logo: /img/shinydevseries_hex.png
