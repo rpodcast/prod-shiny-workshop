@@ -1,0 +1,20 @@
+project:
+  type: website
+
+website:
+  title: "prod-shiny-workshop"
+  navbar:
+    background: primary
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+
+
