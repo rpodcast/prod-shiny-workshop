@@ -10,3 +10,5 @@ Thumbs.db
 prototyping/*
 !prototyping/README.md
 !prototyping/post
+
+/.quarto/
