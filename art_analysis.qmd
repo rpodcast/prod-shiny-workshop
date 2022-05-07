@@ -1,0 +1,48 @@
+---
+title: "MET Art Analysis"
+format:
+  html:
+    code-fold: true
+---
+
+## Introduction
+
+Quick exploration of the [Metropolitan Museum of Art dataset](https://github.com/metmuseum/openaccess). Download the CSV in the `prototyping` directory if it is not present already.
+
+```{r}
+#| label: import
+#| message: false
+#| warning: false
+#| cache: true
+library(dplyr)
+library(tidyr)
+library(janitor)
+
+# import csv and clean column names
+art_data <- readr::read_csv("prototyping/MetObjects.csv") %>%
+  clean_names()
+
+art_images <- readr::read_csv("prototyping/met-images.csv")
+
+art_data <- left_join(art_data, art_images, by = "object_id")
+```
+
+## Summaries 
+
+```{r}
+#| label: tables
+#| message: false
+library(dplyr)
+library(tidyr)
+library(janitor)
+tabyl(art_data, is_highlight)
+
+tabyl(art_data, is_public_domain)
+
+tabyl(art_data, department)
+```
+
+
+
+
+
