@@ -42,7 +42,31 @@ tabyl(art_data, is_public_domain)
 tabyl(art_data, department)
 ```
 
+## Explore URLs
+
+First we will grab some of the wididata URLs to see what we can do with them.
+
+```{r}
+art_data %>%
+  filter(!is.na(object_wikidata_url)) %>%
+  select(object_id, object_wikidata_url, artist_wikidata_url) %>%
+  slice_head()
+```
+
+I found this writeup on R packages to query [wikidata](https://www.lehir.net/how-to-query-wikidata-in-r/) and we will try them with a result found in the extract above. For example, the URL <https://www.wikidata.org/wiki/Q83545838> has a QID of `Q83545838`
+
+```{r}
+library(WikidataR)
+qid <- "Q83545838"
+item_res <- get_item(id = qid)
+item_res
+```
+
+The result shows there are 10 "claims" for this particular item. Looking at the web page for this entry, it appears that claims refer to the invidual data items on the page. We will try extracting informaiton from the "instance of" property
 
 
-
-
+```{r}
+prop <- "instance of"
+topic_res <- extract_claims(item_res, prop)
+get_names_from_properties(topic_res)
+```
