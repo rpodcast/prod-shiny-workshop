@@ -24,7 +24,7 @@ art_data <- readr::read_csv("prototyping/MetObjects.csv") %>%
 
 art_images <- readr::read_csv("prototyping/met-images.csv")
 
-art_data <- left_join(art_data, art_images, by = "object_id")
+#art_data <- left_join(art_data, art_images, by = "object_id")
 ```
 
 ## Summaries 
@@ -40,6 +40,19 @@ tabyl(art_data, is_highlight)
 tabyl(art_data, is_public_domain)
 
 tabyl(art_data, department)
+
+art_data %>%
+  filter(!is.na(artist_display_name)) %>%
+  filter(is_public_domain) %>%
+  slice_head(n=10) %>%
+  View()
+
+art_data %>%
+  filter(!is.na(artist_display_name)) %>%
+  filter(is_public_domain) %>%
+  filter(!is.na(classification)) %>%
+  View()
+  
 ```
 
 ## Explore URLs
@@ -49,8 +62,9 @@ First we will grab some of the wididata URLs to see what we can do with them.
 ```{r}
 art_data %>%
   filter(!is.na(object_wikidata_url)) %>%
+  filter(is_public_domain) %>%
   select(object_id, object_wikidata_url, artist_wikidata_url) %>%
-  slice_head()
+  slice_head(n = 10)
 ```
 
 I found this writeup on R packages to query [wikidata](https://www.lehir.net/how-to-query-wikidata-in-r/) and we will try them with a result found in the extract above. For example, the URL <https://www.wikidata.org/wiki/Q83545838> has a QID of `Q83545838`
