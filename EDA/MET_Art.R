@@ -27,6 +27,7 @@ art = read_csv('https://media.githubusercontent.com/media/metmuseum/openaccess/m
 
 glimpse(art)
 
+# prototyping folder was not showing up on my end, file too large to have locally
 # write_csv2(art, path = 'prototyping/MetObjects.csv')
 
 # EDA ---------------------------------------------------------------------
