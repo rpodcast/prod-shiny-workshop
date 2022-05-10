@@ -27,7 +27,7 @@ art = read_csv('https://media.githubusercontent.com/media/metmuseum/openaccess/m
 
 glimpse(art)
 
-
+# write_csv2(art, path = 'prototyping/MetObjects.csv')
 
 # EDA ---------------------------------------------------------------------
 
