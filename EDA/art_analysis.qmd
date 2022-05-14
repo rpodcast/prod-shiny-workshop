@@ -3,6 +3,8 @@ title: "MET Art Analysis"
 format:
   html:
     code-fold: true
+execute:
+  eval: false
 ---
 
 ## Introduction

@@ -32,6 +32,20 @@ glimpse(art)
 
 # EDA ---------------------------------------------------------------------
 
+art_single <- art %>%
+  filter(is_public_domain) %>%
+  mutate(mult_ind = stringr::str_detect(artist_display_name, "|")) %>%
+  filter(is.na(mult_ind)) %>%
+  select(., -mult_ind)
+
+art_single %>% dplyr::slice_sample(n = 200) %>% View()
+
+art %>%
+  filter(is_public_domain) %>%
+  select(artist_display_name) %>%
+  mutate(mult_ind = stringr::str_detect(artist_display_name, "|")) %>%
+  janitor::tabyl(mult_ind)
+
 art %>% 
   select(is_highlight) %>% 
   janitor::tabyl(is_highlight)
@@ -117,7 +131,11 @@ art %>%
          artist_age = str_trim(artist_display_bio, side = 'both')
          ) %>% view()
 
-
+art %>%
+  select(artist_display_name, artist_begin_date, artist_end_date) %>%
+  distinct() %>%
+  mutate(artist_age = as.numeric(artist_end_date) - as.numeric(artist_begin_date)) %>%
+  View()
 
 
 

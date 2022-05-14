@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "In this two-day course, you’ll learn valuable techniques for establishing a solid foundation with dependency management via renv and organizing the code base of your app using modules and package infrastructure. We will also highlight ways to integrate a Shiny app with other services such as APIs and connections to databases since for many production-grade applications, “it’s never just Shiny.” Throughout the workshop, students will build upon practical Shiny apps inspired by real-life projects illustrating user-interface improvements, efficient reactive programming, streamlined testing of backend and frontend components, intuitive debugging approaches, and more.\nThis workshop is for the Shiny developer who has entered this stage of their application development journey. The user is ready to learn how essential workflows, best practices, and the expanding community of Shiny-related packages can help them climb the ladder of Shiny development."
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "prod-shiny-workshop",
@@ -21,10 +14,45 @@
     "text": "Overview\nShiny empowers R users to create innovative web applications, without requiring substantial expertise in web development frameworks to get up and running. The positive impact of Shiny in data science workflows across academia and a variety of industries is well-known and growing by the year. It is quite common for an early prototype of a Shiny app to generate tremendous excitement for key stakeholders and decision makers, often leading to requests for enhancements and ultimately be included in a production pipeline or process. The road to meeting this goal is challenging, especially for data scientists and statisticians not accustomed to software development!"
   },
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "In this two-day course, you’ll learn valuable techniques for establishing a solid foundation with dependency management via renv and organizing the code base of your app using modules and package infrastructure. We will also highlight ways to integrate a Shiny app with other services such as APIs and connections to databases since for many production-grade applications, “it’s never just Shiny.” Throughout the workshop, students will build upon practical Shiny apps inspired by real-life projects illustrating user-interface improvements, efficient reactive programming, streamlined testing of backend and frontend components, intuitive debugging approaches, and more.\nThis workshop is for the Shiny developer who has entered this stage of their application development journey. The user is ready to learn how essential workflows, best practices, and the expanding community of Shiny-related packages can help them climb the ladder of Shiny development."
+  },
+  {
     "objectID": "about.html#is-this-course-for-me",
     "href": "about.html#is-this-course-for-me",
     "title": "About",
     "section": "Is this course for me ?",
     "text": "Is this course for me ?\nThis workshop will be appropriate for attendees who answer yes to these questions:\n\nHave you built successful proof-of-concept (POC) Shiny apps and want to take them to the next level for production use?\nDo you want to leverage best practices for integrating your Shiny app with other languages or services?\nDo you want to construct Shiny apps with new functionality either from the vast community of Shiny extensions or building your own customizations?"
+  },
+  {
+    "objectID": "EDA/art_analysis.html",
+    "href": "EDA/art_analysis.html",
+    "title": "MET Art Analysis",
+    "section": "",
+    "text": "Quick exploration of the Metropolitan Museum of Art dataset. Download the CSV in the prototyping directory if it is not present already.\n\n\nCode\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(janitor)\n\n# import csv and clean column names\nart_data <- readr::read_csv(\"prototyping/MetObjects.csv\") %>%\n  clean_names()\n\nart_images <- readr::read_csv(\"prototyping/met-images.csv\")\n\n#art_data <- left_join(art_data, art_images, by = \"object_id\")"
+  },
+  {
+    "objectID": "EDA/art_analysis.html#summaries",
+    "href": "EDA/art_analysis.html#summaries",
+    "title": "MET Art Analysis",
+    "section": "Summaries",
+    "text": "Summaries\n\n\nCode\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(janitor)\ntabyl(art_data, is_highlight)\n\ntabyl(art_data, is_public_domain)\n\ntabyl(art_data, department)\n\nart_data %>%\n  filter(!is.na(artist_display_name)) %>%\n  filter(is_public_domain) %>%\n  slice_head(n=10) %>%\n  View()\n\nart_data %>%\n  filter(!is.na(artist_display_name)) %>%\n  filter(is_public_domain) %>%\n  filter(!is.na(classification)) %>%\n  View()"
+  },
+  {
+    "objectID": "EDA/art_analysis.html#explore-urls",
+    "href": "EDA/art_analysis.html#explore-urls",
+    "title": "MET Art Analysis",
+    "section": "Explore URLs",
+    "text": "Explore URLs\nFirst we will grab some of the wididata URLs to see what we can do with them.\n\n\nCode\nart_data %>%\n  filter(!is.na(object_wikidata_url)) %>%\n  filter(is_public_domain) %>%\n  select(object_id, object_wikidata_url, artist_wikidata_url) %>%\n  slice_head(n = 10)\n\n\nI found this writeup on R packages to query wikidata and we will try them with a result found in the extract above. For example, the URL https://www.wikidata.org/wiki/Q83545838 has a QID of Q83545838\n\n\nCode\nlibrary(WikidataR)\nqid <- \"Q83545838\"\nitem_res <- get_item(id = qid)\nitem_res\n\n\nThe result shows there are 10 “claims” for this particular item. Looking at the web page for this entry, it appears that claims refer to the invidual data items on the page. We will try extracting informaiton from the “instance of” property\n\n\nCode\nprop <- \"instance of\"\ntopic_res <- extract_claims(item_res, prop)\nget_names_from_properties(topic_res)"
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "Slides from Building Production-Quality Shiny Applications",
+    "section": "",
+    "text": "Hello"
   }
 ]

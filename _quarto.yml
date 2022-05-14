@@ -11,7 +11,10 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
-      - art_analysis.qmd
+      - href: schedule.qmd
+        text: Schedule
+      - href: slides.qmd
+        text: Slides
 
 format:
   html:
