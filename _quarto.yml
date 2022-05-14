@@ -18,8 +18,10 @@ website:
 
 format:
   html:
-    theme: darkly
-    css: styles.css
+    theme: 
+      light: flatly
+      dark: darkly
+    #css: styles.css
     toc: true
 
 # https://quarto.org/docs/output-formats/html-themes.html#dark-mode

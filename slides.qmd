@@ -3,4 +3,10 @@ title: "Slides from Building Production-Quality Shiny Applications"
 format: html
 ---
 
-Hello
+Here are the slides for the workshop:
+
+## Monday, July 25
+
+### Session 1
+
+* [Welcome](slides/welcome.qmd)

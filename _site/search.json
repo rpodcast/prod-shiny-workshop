@@ -53,6 +53,27 @@
     "href": "slides.html",
     "title": "Slides from Building Production-Quality Shiny Applications",
     "section": "",
-    "text": "Hello"
+    "text": "Here are the slides for the workshop:"
+  },
+  {
+    "objectID": "slides.html#monday-july-25",
+    "href": "slides.html#monday-july-25",
+    "title": "Slides from Building Production-Quality Shiny Applications",
+    "section": "Monday, July 25",
+    "text": "Monday, July 25\n\nSession 1\n\nWelcome"
+  },
+  {
+    "objectID": "slides/welcome.html",
+    "href": "slides/welcome.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "Just testing"
+  },
+  {
+    "objectID": "slides/welcome.html#hello",
+    "href": "slides/welcome.html#hello",
+    "title": "Welcome",
+    "section": "Hello!",
+    "text": "Hello!\nJust testing"
   }
 ]
