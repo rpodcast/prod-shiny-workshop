@@ -1,10 +1,20 @@
 ---
-title: "prod-shiny-workshop"
+title: "Production Shiny Workshop"
 ---
 
-<img height='250' src='./images/shinybrain.png'>
+<img height='250' src='./images/Shiny.png'>
 
 Welcome to the Building production-quality Shiny Applications webpage!
+A two-day workshop to learn how to make high quality Shiny apps, then how to monitor the app post deployment.
+
+Date: July 25-26, 2022
+
+Time: TBA
+
+Location: Washington, DC
+
+Event: rstudio::conf(2022)
+
 
 ## Overview 
 

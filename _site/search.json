@@ -2,14 +2,14 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "prod-shiny-workshop",
+    "title": "Production Shiny Workshop",
     "section": "",
-    "text": "Welcome to the Building production-quality Shiny Applications webpage!"
+    "text": "Welcome to the Building production-quality Shiny Applications webpage! A two-day workshop to learn how to make high quality Shiny apps, then how to monitor the app post deployment.\nDate: July 25-26, 2022\nTime: TBA\nLocation: Washington, DC\nEvent: rstudio::conf(2022)"
   },
   {
     "objectID": "index.html#overview",
     "href": "index.html#overview",
-    "title": "prod-shiny-workshop",
+    "title": "Production Shiny Workshop",
     "section": "Overview",
     "text": "Overview\nShiny empowers R users to create innovative web applications, without requiring substantial expertise in web development frameworks to get up and running. The positive impact of Shiny in data science workflows across academia and a variety of industries is well-known and growing by the year. It is quite common for an early prototype of a Shiny app to generate tremendous excitement for key stakeholders and decision makers, often leading to requests for enhancements and ultimately be included in a production pipeline or process. The road to meeting this goal is challenging, especially for data scientists and statisticians not accustomed to software development!"
   },
@@ -72,8 +72,29 @@
   {
     "objectID": "slides/welcome.html#hello",
     "href": "slides/welcome.html#hello",
-    "title": "Welcome",
+    "title": "Building Production-Quality Shiny Applications",
     "section": "Hello!",
-    "text": "Hello!\nJust testing"
+    "text": "Hello!\nWelcome to making Production Quality Shiny Apps!"
+  },
+  {
+    "objectID": "slides/welcome.html#overview",
+    "href": "slides/welcome.html#overview",
+    "title": "Building Production-Quality Shiny Applications",
+    "section": "Overview",
+    "text": "Overview\n\nintro\nbreaks\nhammer time\ndeploy it"
+  },
+  {
+    "objectID": "slides/welcome.html#july-26",
+    "href": "slides/welcome.html#july-26",
+    "title": "Building Production-Quality Shiny Applications",
+    "section": "July 26",
+    "text": "July 26\n\nyour\nworld\nwill\nchange !"
+  },
+  {
+    "objectID": "slides/welcome.html#next-day",
+    "href": "slides/welcome.html#next-day",
+    "title": "Building Production-Quality Shiny Applications",
+    "section": "Next day",
+    "text": "Next day\n\nDeploy AppMonitor App\n\n\nLearn where to deploy your Shiny app\n\n\nNow your app is in the wild, watch over it like a hawk"
   }
 ]
