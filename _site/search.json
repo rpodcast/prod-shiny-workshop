@@ -96,5 +96,19 @@
     "title": "Building Production-Quality Shiny Applications",
     "section": "Next day",
     "text": "Next day\n\nDeploy AppMonitor App\n\n\nLearn where to deploy your Shiny app\n\n\nNow your app is in the wild, watch over it like a hawk"
+  },
+  {
+    "objectID": "slides/welcome.html#overall-apps",
+    "href": "slides/welcome.html#overall-apps",
+    "title": "Building Production-Quality Shiny Applications",
+    "section": "Overall Apps",
+    "text": "Overall Apps\n\n\napps"
+  },
+  {
+    "objectID": "slides/welcome.html#libraries",
+    "href": "slides/welcome.html#libraries",
+    "title": "Building Production-Quality Shiny Applications",
+    "section": "Libraries",
+    "text": "Libraries\n\n\napps"
   }
 ]

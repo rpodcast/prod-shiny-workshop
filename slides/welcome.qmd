@@ -2,7 +2,7 @@
 title: "Building Production-Quality Shiny Applications"
 format: 
   revealjs:
-    theme: dark # dark
+    theme: [moon] # moon= teal bg  |  dark
     scrollable: true
     incremental: true
     slide-number: c/t # c/t | c | h/v | h.v
@@ -49,5 +49,9 @@ Learn where to deploy your Shiny app
 Now your app is in the wild, watch over it like a hawk 
 ::::
 
+
+## Libraries 
+
+![apps](assets/img/apps.png)
 
 
