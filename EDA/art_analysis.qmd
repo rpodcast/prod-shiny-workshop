@@ -39,7 +39,7 @@ For the workshop, we will use a filtered data set based on the following criteri
 
 ```{r}
 #| label: analysis-set
-art_single <- art %>%
+art_single <- art_data %>%
   filter(is_public_domain) %>%
   mutate(mult_ind = stringr::str_detect(artist_display_name, "|")) %>%
   filter(is.na(mult_ind)) %>%
