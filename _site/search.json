@@ -109,6 +109,20 @@
     "href": "slides/welcome.html#libraries",
     "title": "Building Production-Quality Shiny Applications",
     "section": "Libraries",
-    "text": "Libraries\n\n\napps"
+    "text": "Libraries\n\napps"
+  },
+  {
+    "objectID": "slides/welcome.html#countdown",
+    "href": "slides/welcome.html#countdown",
+    "title": "Building Production-Quality Shiny Applications",
+    "section": "Countdown",
+    "text": "Countdown"
+  },
+  {
+    "objectID": "slides/welcome.html#timer",
+    "href": "slides/welcome.html#timer",
+    "title": "Building Production-Quality Shiny Applications",
+    "section": "Timer",
+    "text": "Timer\n\n\n\n00:45"
   }
 ]

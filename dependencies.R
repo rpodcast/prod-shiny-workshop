@@ -33,6 +33,7 @@ library(logger)
 library(plotly)
 library(crosstalk)
 library(fontawesome)
+library(here)
 
 # github packages
 # renv::install("rstudio/connectapi")
@@ -40,3 +41,6 @@ library(connectapi)
 
 # renv::install("ewenme/shinya11y")
 library(shinya11y)
+
+# renv::install("gadenbuie/countdown")
+library(countdown)

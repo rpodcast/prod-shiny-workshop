@@ -54,4 +54,10 @@ Now your app is in the wild, watch over it like a hawk
 
 ![apps](assets/img/apps.png)
 
+## Timer
 
+```{r}
+#| label: timer
+library(countdown)
+countdown(minutes = 0, seconds = 45)
+```

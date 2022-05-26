@@ -21,13 +21,42 @@ library(tidyr)
 library(janitor)
 
 # import csv and clean column names
-art_data <- readr::read_csv("prototyping/MetObjects.csv") %>%
+art_data <- readr::read_csv(file.path(here::here(), "prototyping/MetObjects.csv")) %>%
   clean_names()
 
-art_images <- readr::read_csv("prototyping/met-images.csv")
+art_images <- readr::read_csv(file.path(here::here(), "prototyping/met-images.csv"))
 
 #art_data <- left_join(art_data, art_images, by = "object_id")
 ```
+
+## Create Analysis Set
+
+For the workshop, we will use a filtered data set based on the following criteria:
+
+* Records with a single artist (i.e. not multiple)
+* Records in the public domain
+* Join with the custom data set with image links for each record. Note that in the art image data set, a given record might have multiple images.
+
+```{r}
+#| label: analysis-set
+art_single <- art %>%
+  filter(is_public_domain) %>%
+  mutate(mult_ind = stringr::str_detect(artist_display_name, "|")) %>%
+  filter(is.na(mult_ind)) %>%
+  select(., -mult_ind)
+
+art_images_single <- art_images %>%
+  group_by(object_id) %>%
+  slice_sample(n = 1) %>%
+  ungroup() %>%
+  filter(object_id %in% art_single$object_id)
+  #count(object_id)
+
+art_single_image <- art_single %>%
+  left_join(art_images_single, by = "object_id") %>%
+  filter(!is.na(image_url))
+```
+
 
 ## Summaries 
 
