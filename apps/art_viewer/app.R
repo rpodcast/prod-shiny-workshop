@@ -4,6 +4,9 @@ library(dplyr)
 art_sub <- readRDS("data/art_sub.rds")
 
 ui <- fluidPage(
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+  ),
   fluidRow(
     div(
       align = "center",
