@@ -55,6 +55,15 @@ art_images_single <- art_images %>%
 art_single_image <- art_single %>%
   left_join(art_images_single, by = "object_id") %>%
   filter(!is.na(image_url))
+
+saveRDS(art_single_image, file = file.path(here::here(), "apps/art_viewer/data/art_single_image.rds"))
+
+set.seed(8675309)
+
+art_sub <- art_single_image %>%
+  slice_sample(n = 100)
+
+saveRDS(art_sub, file = file.path(here::here(), "apps/art_viewer/data/art_sub.rds"))
 ```
 
 
