@@ -66,6 +66,20 @@ art_sub <- art_single_image %>%
 saveRDS(art_sub, file = file.path(here::here(), "apps/art_viewer/data/art_sub.rds"))
 ```
 
+Use this chunk to load results from the cached data
+
+```{r}
+#| label: explore-small-set
+#| message: false
+#| warning: false
+#| cache: true
+library(dplyr)
+library(tidyr)
+library(janitor)
+
+art_sub <- readRDS(file.path(here::here(), "apps/art_viewer/data/art_sub.rds"))
+```
+
 
 ## Summaries 
 
