@@ -1,6 +1,17 @@
 library(shiny)
 library(dplyr)
+library(shinyvalidate)
 
+# data fields to display in app:
+# title
+# object_date
+# credit_line
+# classification
+# department
+# accession_year
+# medium
+
+# object_id == 571333
 art_sub <- readRDS("data/art_sub.rds")
 
 ui <- fluidPage(
@@ -12,10 +23,6 @@ ui <- fluidPage(
       align = "center",
       uiOutput("img"),
       actionButton(
-        "new_image",
-        "New Image"
-      ),
-      actionButton(
         "like",
         label = NULL,
         icon = icon("thumbs-up")
@@ -26,6 +33,12 @@ ui <- fluidPage(
         icon = icon("thumbs-down")
       )
     )
+  ),
+  fluidRow(
+    column(
+      width = 4,
+      tableOutput("choice_table")
+    )
   )
 )
 
@@ -35,10 +48,20 @@ server <- function(input, output) {
     slice_sample(n = 1) %>%
     pull(image_url)
 
-  img_exclude <- reactiveVal(NULL)
   img_current <- reactiveVal(NULL)
   img_like <- reactiveVal(NULL)
   img_dislike <- reactiveVal(NULL)
+  img_log <- reactiveVal(NULL)
+
+  # reactive for art choices data frame
+  # to be used in table 
+  choice_df <- reactive({
+    req(any(!is.null(img_like()), !is.null(img_dislike())))
+
+    art_sub %>%
+      filter(image_url %in% img_log()) %>%
+      select(title, object_date, credit_line, classification, department, accession_year, medium)
+  })
 
   observeEvent(input$new_image, {
     img_exclude(c(img_exclude(), img_current()))
@@ -46,20 +69,21 @@ server <- function(input, output) {
 
   observeEvent(input$like, {
     img_like(c(img_like(), img_current()))
+    img_log(c(img_log(), img_current()))
   })
 
   observeEvent(input$dislike, {
     img_dislike(c(img_dislike(), img_current()))
-    img_exclude(c(img_exclude(), img_current()))
+    img_log(c(img_log(), img_current()))
   })
 
   output$img <- renderUI({
     # select image 
-    if (is.null(img_exclude())) {
+    if (is.null(img_log())) {
       img_current(first_image)
     } else {
       img <- art_sub %>%
-        filter(!image_url %in% img_exclude()) %>%
+        filter(!image_url %in% img_log()) %>%
         slice_sample(n = 1) %>%
         pull(image_url)
 
@@ -67,6 +91,11 @@ server <- function(input, output) {
     }
 
     tags$img(src = img_current())
+  })
+
+  output$choice_table <- renderTable({
+    req(choice_df())
+    choice_df()
   })
 }
 
