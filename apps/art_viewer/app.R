@@ -22,6 +22,7 @@ ui <- fluidPage(
     div(
       align = "center",
       uiOutput("img"),
+      textOutput("metadata"),
       actionButton(
         "like",
         label = NULL,
@@ -63,6 +64,16 @@ server <- function(input, output) {
       select(title, object_date, credit_line, classification, department, accession_year, medium)
   })
 
+  metadata_rv <- reactive({
+    req(img_current())
+
+    tmp <- art_sub %>%
+      filter(image_url == img_current()) %>%
+      select(title, department) 
+
+    glue::glue("{pull(tmp, title)} from {pull(tmp, department)}")
+  })
+
   observeEvent(input$new_image, {
     img_exclude(c(img_exclude(), img_current()))
   })
@@ -91,6 +102,11 @@ server <- function(input, output) {
     }
 
     tags$img(src = img_current())
+  })
+
+  output$metadata <- renderText({
+    req(metadata_rv())
+    metadata_rv()
   })
 
   output$choice_table <- renderTable({
