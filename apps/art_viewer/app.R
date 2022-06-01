@@ -1,6 +1,7 @@
 library(shiny)
 library(dplyr)
 library(shinyvalidate)
+library(shinylogs)
 
 # data fields to display in app:
 # title
@@ -43,7 +44,13 @@ ui <- fluidPage(
   )
 )
 
-server <- function(input, output) {
+server <- function(input, output, session) {
+
+  # initialize logging
+  track_usage(
+    storage_mode = store_null()
+  )
+  
   # get first image
   first_image <- art_sub %>%
     slice_sample(n = 1) %>%
