@@ -126,6 +126,35 @@
       "Hash": "32e79b908fda56ee57fe518a8d37b864",
       "Requirements": []
     },
+    "RcppCCTZ": {
+      "Package": "RcppCCTZ",
+      "Version": "0.2.10",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "f41ba6c0b1b62d8f3610e70029d6fb9e",
+      "Requirements": [
+        "Rcpp"
+      ]
+    },
+    "RcppDate": {
+      "Package": "RcppDate",
+      "Version": "0.0.3",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "08cc427d6fe7a63e604cfa11aad31006",
+      "Requirements": []
+    },
+    "anytime": {
+      "Package": "anytime",
+      "Version": "0.3.9",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "74a64813f17b492da9c6afda6b128e3d",
+      "Requirements": [
+        "BH",
+        "Rcpp"
+      ]
+    },
     "askpass": {
       "Package": "askpass",
       "Version": "1.1",
@@ -973,6 +1002,20 @@
         "colorspace"
       ]
     },
+    "nanotime": {
+      "Package": "nanotime",
+      "Version": "0.3.6",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "609658c0d87106c130e1101c3c37c4dd",
+      "Requirements": [
+        "Rcpp",
+        "RcppCCTZ",
+        "RcppDate",
+        "bit64",
+        "zoo"
+      ]
+    },
     "nlme": {
       "Package": "nlme",
       "Version": "3.1-155",
@@ -1422,6 +1465,23 @@
         "shiny"
       ]
     },
+    "shinylogs": {
+      "Package": "shinylogs",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "a2425d913d852b5401628405d3767965",
+      "Requirements": [
+        "anytime",
+        "bit64",
+        "data.table",
+        "digest",
+        "htmltools",
+        "jsonlite",
+        "nanotime",
+        "shiny"
+      ]
+    },
     "shinyvalidate": {
       "Package": "shinyvalidate",
       "Version": "0.1.2",
@@ -1790,6 +1850,16 @@
       "Repository": "RSPM",
       "Hash": "458bb38374d73bf83b1bb85e353da200",
       "Requirements": []
+    },
+    "zoo": {
+      "Package": "zoo",
+      "Version": "1.8-10",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "277b8b4c5b7b47e664aebfe024a2092e",
+      "Requirements": [
+        "lattice"
+      ]
     }
   }
 }

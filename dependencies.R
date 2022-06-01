@@ -34,6 +34,7 @@ library(plotly)
 library(crosstalk)
 library(fontawesome)
 library(here)
+library(shinylogs)
 
 # github packages
 # renv::install("rstudio/connectapi")
