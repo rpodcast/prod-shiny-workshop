@@ -9,6 +9,14 @@
     ]
   },
   "Packages": {
+    "AsioHeaders": {
+      "Package": "AsioHeaders",
+      "Version": "1.16.1-1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "9305444d113b052089eba3694047d42d",
+      "Requirements": []
+    },
     "BH": {
       "Package": "BH",
       "Version": "1.78.0-0",
@@ -1465,6 +1473,29 @@
         "shiny"
       ]
     },
+    "shinyloadtest": {
+      "Package": "shinyloadtest",
+      "Version": "1.1.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "eeba2e2da392ca67c10b450da87d2ed0",
+      "Requirements": [
+        "R6",
+        "curl",
+        "dplyr",
+        "ggplot2",
+        "httpuv",
+        "jsonlite",
+        "magrittr",
+        "rlang",
+        "scales",
+        "stringr",
+        "svglite",
+        "vroom",
+        "websocket",
+        "xml2"
+      ]
+    },
     "shinylogs": {
       "Package": "shinylogs",
       "Version": "0.2.1",
@@ -1558,6 +1589,17 @@
         "rprojroot",
         "tibble",
         "withr"
+      ]
+    },
+    "svglite": {
+      "Package": "svglite",
+      "Version": "2.1.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "68dfdf211af6aa4e5f050f064f64d401",
+      "Requirements": [
+        "cpp11",
+        "systemfonts"
       ]
     },
     "swagger": {
@@ -1770,6 +1812,19 @@
         "rematch2",
         "rlang",
         "tibble"
+      ]
+    },
+    "websocket": {
+      "Package": "websocket",
+      "Version": "1.4.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "76e0d400757e318cca33def29ccebbc2",
+      "Requirements": [
+        "AsioHeaders",
+        "R6",
+        "cpp11",
+        "later"
       ]
     },
     "webutils": {

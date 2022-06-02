@@ -45,6 +45,12 @@ RUN install2.r --error --skipinstalled --ncpus -1 renv remotes
 RUN curl -L https://github.com/gohugoio/hugo/releases/download/v0.92.0/hugo_extended_0.92.0_Linux-64bit.deb -o /tmp/hugo.deb
 RUN apt-get -y install ./tmp/hugo.deb
 
+# [Optional] Uncomment this section to add shinycannon to the container
+RUN curl -L https://github.com/rstudio/shinycannon/releases/download/v1.1.3/shinycannon_1.1.3-dd43f6b_amd64.deb -o /tmp/shinycannon.deb
+RUN apt-get update \
+  && apt-get -y install --no-install-recommends default-jre-headless \
+  && apt-get -y install ./tmp/shinycannon.deb
+
 EXPOSE 8787
 
 CMD ["/init"]
