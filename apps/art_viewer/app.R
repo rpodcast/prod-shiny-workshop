@@ -1,3 +1,5 @@
+# To run app in this project, type following in R console:
+# shiny::runApp("apps/art_viewer")
 library(shiny)
 library(dplyr)
 library(shinyvalidate)
