@@ -40,7 +40,7 @@ ui <- fluidPage(
   ),
   fluidRow(
     column(
-      width = 4,
+      width = 12,
       tableOutput("choice_table")
     )
   )
