@@ -1,0 +1,3 @@
+# set to active configuration
+R_CONFIG_ACTIVE="default"
+#R_CONFIG_ACTIVE="production"
