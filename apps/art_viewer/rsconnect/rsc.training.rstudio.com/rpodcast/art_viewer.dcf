@@ -1,0 +1,11 @@
+name: art_viewer
+title: art_viewer
+username: rpodcast
+account: rpodcast
+server: rsc.training.rstudio.com
+hostUrl: https://rsc.training.rstudio.com/__api__
+appId: 55
+bundleId: 58
+url: https://rsc.training.rstudio.com/art_viewer/
+when: 1656593367.03412
+lastSyncTime: 1656593367.03412

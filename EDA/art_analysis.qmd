@@ -1,0 +1,141 @@
+---
+title: "MET Art Analysis"
+format:
+  html:
+    code-fold: true
+execute:
+  eval: false
+---
+
+## Introduction
+
+Quick exploration of the [Metropolitan Museum of Art dataset](https://github.com/metmuseum/openaccess). Download the CSV in the `prototyping` directory if it is not present already.
+
+```{r}
+#| label: import
+#| message: false
+#| warning: false
+#| cache: true
+library(dplyr)
+library(tidyr)
+library(janitor)
+
+# import csv and clean column names
+art_data <- readr::read_csv(file.path(here::here(), "prototyping/MetObjects.csv")) %>%
+  clean_names()
+
+art_images <- readr::read_csv(file.path(here::here(), "prototyping/met-images.csv"))
+
+#art_data <- left_join(art_data, art_images, by = "object_id")
+```
+
+## Create Analysis Set
+
+For the workshop, we will use a filtered data set based on the following criteria:
+
+* Records with a single artist (i.e. not multiple)
+* Records in the public domain
+* Join with the custom data set with image links for each record. Note that in the art image data set, a given record might have multiple images.
+
+```{r}
+#| label: analysis-set
+art_single <- art_data %>%
+  filter(is_public_domain) %>%
+  mutate(mult_ind = stringr::str_detect(artist_display_name, "|")) %>%
+  filter(is.na(mult_ind)) %>%
+  select(., -mult_ind)
+
+art_images_single <- art_images %>%
+  group_by(object_id) %>%
+  slice_sample(n = 1) %>%
+  ungroup() %>%
+  filter(object_id %in% art_single$object_id)
+  #count(object_id)
+
+art_single_image <- art_single %>%
+  left_join(art_images_single, by = "object_id") %>%
+  filter(!is.na(image_url)) %>%
+  filter(!is.na(title))
+
+saveRDS(art_single_image, file = file.path(here::here(), "apps/art_viewer/data/art_single_image.rds"))
+
+set.seed(8675309)
+
+art_sub <- art_single_image %>%
+  slice_sample(n = 1000)
+
+saveRDS(art_sub, file = file.path(here::here(), "apps/art_viewer/data/art_sub.rds"))
+```
+
+Use this chunk to load results from the cached data
+
+```{r}
+#| label: explore-small-set
+#| message: false
+#| warning: false
+#| cache: true
+library(dplyr)
+library(tidyr)
+library(janitor)
+
+art_sub <- readRDS(file.path(here::here(), "apps/art_viewer/data/art_sub.rds"))
+```
+
+
+## Summaries 
+
+```{r}
+#| label: tables
+#| message: false
+library(dplyr)
+library(tidyr)
+library(janitor)
+tabyl(art_data, is_highlight)
+
+tabyl(art_data, is_public_domain)
+
+tabyl(art_data, department)
+
+art_data %>%
+  filter(!is.na(artist_display_name)) %>%
+  filter(is_public_domain) %>%
+  slice_head(n=10) %>%
+  View()
+
+art_data %>%
+  filter(!is.na(artist_display_name)) %>%
+  filter(is_public_domain) %>%
+  filter(!is.na(classification)) %>%
+  View()
+  
+```
+
+## Explore URLs
+
+First we will grab some of the wididata URLs to see what we can do with them.
+
+```{r}
+art_data %>%
+  filter(!is.na(object_wikidata_url)) %>%
+  filter(is_public_domain) %>%
+  select(object_id, object_wikidata_url, artist_wikidata_url) %>%
+  slice_head(n = 10)
+```
+
+I found this writeup on R packages to query [wikidata](https://www.lehir.net/how-to-query-wikidata-in-r/) and we will try them with a result found in the extract above. For example, the URL <https://www.wikidata.org/wiki/Q83545838> has a QID of `Q83545838`
+
+```{r}
+library(WikidataR)
+qid <- "Q83545838"
+item_res <- get_item(id = qid)
+item_res
+```
+
+The result shows there are 10 "claims" for this particular item. Looking at the web page for this entry, it appears that claims refer to the invidual data items on the page. We will try extracting informaiton from the "instance of" property
+
+
+```{r}
+prop <- "instance of"
+topic_res <- extract_claims(item_res, prop)
+get_names_from_properties(topic_res)
+```

@@ -1,0 +1,382 @@
+---
+title: "MET Art Analysis using Database"
+format:
+  html:
+    code-fold: true
+execute:
+  eval: false
+---
+
+## Introduction
+
+Quick analyses and visualizations of the [Metropolitan Museum of Art dataset](https://github.com/metmuseum/openaccess) processed data set, currently stored in a database. This document assumes the database docker container is running. For inspiration, we will replicate or enhance analyses from these sources:
+
+* [When art meets big data: Analyzing 200,000 items from The Met collection in BigQuery](https://cloud.google.com/blog/products/gcp/when-art-meets-big-data-analyzing-200000-items-from-the-met-collection-in-bigquery)
+* [The Metropolitan Museum of Art - Data Analysis and Visualization](https://github.com/margaretmz/met-museum-data-analysis)
+
+```{r}
+#| label: import
+#| message: false
+#| warning: false
+#| cache: true
+library(dplyr)
+library(dbplyr)
+library(ggplot2)
+library(tidyr)
+library(janitor)
+library(dm)
+
+# establish connection to local container with database
+con <- DBI::dbConnect(
+  RPostgres::Postgres(),
+  host = "workshopdb",
+  dbname = "postgres",
+  port = 5432,
+  user = "postgres",
+  password = "shiny"
+)
+
+con_dm <- dm_from_src(con)
+
+con_dm_keys <- con_dm %>%
+  dm_add_pk(art, columns = image_file) %>%
+  dm_add_fk(label_annotations, image_file, art) %>%
+  dm_add_fk(image_properties_annotation, image_file, art) %>%
+  dm_add_fk(object_annotations, image_file, art) %>%
+  dm_add_fk(crop_hints_annotation, image_file, art)
+```
+## Unique annotation items
+
+```{r}
+#| label: unique-annotations
+
+con_dm_keys %>%
+  dm_zoom_to(label_annotations) %>%
+  select(description) %>%
+  distinct() %>%
+  collect()
+```
+
+## Unique Object Items
+
+```{r}
+#| label: object-annotations
+
+con_dm_keys %>%
+  dm_zoom_to(object_annotations) %>%
+  select(name) %>%
+  distinct() %>%
+  collect()
+
+```
+## Time Peroids in data
+
+```{r}
+#| label: time-periods
+con_dm_keys %>%
+  dm_zoom_to(art) %>%
+  select(period, object_begin_date) %>%
+  distinct() %>%
+  group_by(period) %>%
+  summarize(min_year = min(object_begin_date)) %>%
+  ungroup() %>%
+  arrange(min_year) %>%
+  collect()
+
+con_dm_keys %>%
+  dm_zoom_to(art) %>%
+  select(period, object_begin_date) %>%
+  distinct() %>%
+  group_by(period) %>%
+  summarize(min_year = min(object_begin_date)) %>%
+  ungroup() %>%
+  arrange(desc(min_year)) %>%
+  collect()
+  
+
+
+con_dm_keys %>%
+  dm_zoom_to(art) %>%
+  select(period) %>%
+  distinct() %>%
+  collect()
+
+con_dm_keys %>%
+  dm_zoom_to(art) %>%
+  mutate(object_time_create = object_end_date - object_begin_date) %>%
+  select(department, classification, title, period, object_begin_date, object_end_date, object_time_create) %>%
+  arrange(desc(object_time_create)) %>%
+  collect()
+```
+
+
+## Labels by Time Period
+
+Replicating analysis of labels by time period from the Google Cloud blog article. 
+
+```{r}
+#| label: labels-time
+
+con_dm_keys %>%
+  dm_join_to_tbl(art, label_annotations) %>%
+  filter(!description %in% c("art", "Art")) %>%
+  select(image_file, description, period) %>%
+  group_by(period, description) %>%
+  summarize(n = n()) %>%
+  ungroup() %>%
+  filter(n > 10)
+```
+
+## Most dominant colors
+
+```{r}
+#| label: color-count
+
+con_dm_keys %>%
+  dm_zoom_to(image_properties_annotation) %>%
+  group_by(hexcode) %>%
+  summarize(n = n()) %>%
+  ungroup() %>%
+  arrange(desc(n)) %>%
+  collect()
+```
+
+## Most common objects annotated in each image
+
+```{r}
+#| label: object-count
+
+con_dm_keys %>%
+  dm_zoom_to(object_annotations) %>%
+  group_by(name) %>%
+  summarize(n = n()) %>%
+  ungroup() %>%
+  arrange(desc(n)) %>%
+  collect()
+```
+
+## Explore art table
+
+```{r}
+#| label: art-explore
+
+art_db <- tbl(con, "art")
+
+art_explore <- art_db %>%
+  slice_sample(n = 50) %>%
+  collect()
+
+art_explore
+
+
+```
+
+## Summary of artwork by classification
+
+```{r}
+#| label: art-class
+
+con_dm_keys %>%
+  dm_zoom_to(art) %>%
+  group_by(classification) %>%
+  summarize(n = n()) %>%
+  ungroup() %>%
+  arrange(desc(n)) %>%
+  collect()
+```
+
+## Object begin and end date analysis
+
+```{r}
+#| object=dates
+
+con_dm_keys %>%
+  dm_zoom_to(art) %>%
+  mutate(object_time_create = object_end_date - object_begin_date) %>%
+  group_by(period) %>%
+  summarize(mean_begin = mean(object_begin_date, na.rm = TRUE),
+            mean_end = mean(object_end_date, na.rm = TRUE),
+            mean_creation = mean(object_time_create, na.rm = TRUE)) %>%
+  ungroup() %>%
+  arrange(mean_begin) %>%
+  collect()
+
+con_dm_keys %>%
+  dm_zoom_to(art) %>%
+  mutate(object_time_create = object_end_date - object_begin_date) %>%
+  filter(object_time_create > 10000) %>%
+  select(department, classification, title, period, object_begin_date, object_end_date, object_time_create) %>%
+  arrange(desc(object_time_create)) %>%
+  collect()
+              
+```
+
+
+## Create list of remaining images to download
+
+This part of analysis has already been executed
+
+```{r}
+#| eval: false
+art_db <- tbl(con, "art") 
+
+prev_images <- readr::read_delim(fs::path(here::here(), "prototyping/current_download_files.txt"), delim = ",", col_names = "image_file") %>%
+  mutate(image_download = TRUE)
+
+all_images_df <- art_db %>%
+  select(image_url) %>%
+  distinct() %>%
+  collect() %>%
+  mutate(image_file = fs::path_file(image_url)) %>%
+  left_join(prev_images, by = "image_file")
+
+remaining_image_urls <- all_images_df %>%
+  filter(is.na(image_download)) %>%
+  pull(image_url)
+
+cat(remaining_image_urls, file = fs::path(here::here(), "prototyping/remaining_image_urls.txt"), sep = "\n")
+```
+
+
+## Write image URLs to a file
+
+```{r}
+#| eval: false
+image_urls <- art_db %>%
+  select(image_url) %>%
+  distinct() %>%
+  collect() %>%
+  pull(image_url)
+
+cat(image_urls, file = "prototyping/image_urls.txt", sep = "\n")
+```
+
+
+## Summary metrics
+
+```{r}
+art_db <- tbl(con, "art") 
+n_records <- art_db %>%
+  tally() %>%
+  collect()
+
+n_records
+n_records / 1000
+
+art_sub <- art_db %>%
+  head(100) %>%
+  collect()
+
+```
+
+
+## Create Analysis Set
+
+For the workshop, we will use a filtered data set based on the following criteria:
+
+* Records with a single artist (i.e. not multiple)
+* Records in the public domain
+* Join with the custom data set with image links for each record. Note that in the art image data set, a given record might have multiple images.
+
+```{r}
+#| label: analysis-set
+art_single <- art_data %>%
+  filter(is_public_domain) %>%
+  mutate(mult_ind = stringr::str_detect(artist_display_name, "|")) %>%
+  filter(is.na(mult_ind)) %>%
+  select(., -mult_ind)
+
+art_images_single <- art_images %>%
+  group_by(object_id) %>%
+  slice_sample(n = 1) %>%
+  ungroup() %>%
+  filter(object_id %in% art_single$object_id)
+  #count(object_id)
+
+art_single_image <- art_single %>%
+  left_join(art_images_single, by = "object_id") %>%
+  filter(!is.na(image_url)) %>%
+  filter(!is.na(title))
+
+saveRDS(art_single_image, file = file.path(here::here(), "apps/art_viewer/data/art_single_image.rds"))
+
+set.seed(8675309)
+
+art_sub <- art_single_image %>%
+  slice_sample(n = 1000)
+
+saveRDS(art_sub, file = file.path(here::here(), "apps/art_viewer/data/art_sub.rds"))
+```
+
+Use this chunk to load results from the cached data
+
+```{r}
+#| label: explore-small-set
+#| message: false
+#| warning: false
+#| cache: true
+library(dplyr)
+library(tidyr)
+library(janitor)
+
+art_sub <- readRDS(file.path(here::here(), "apps/art_viewer/data/art_sub.rds"))
+```
+
+
+## Summaries 
+
+```{r}
+#| label: tables
+#| message: false
+library(dplyr)
+library(tidyr)
+library(janitor)
+tabyl(art_data, is_highlight)
+
+tabyl(art_data, is_public_domain)
+
+tabyl(art_data, department)
+
+art_data %>%
+  filter(!is.na(artist_display_name)) %>%
+  filter(is_public_domain) %>%
+  slice_head(n=10) %>%
+  View()
+
+art_data %>%
+  filter(!is.na(artist_display_name)) %>%
+  filter(is_public_domain) %>%
+  filter(!is.na(classification)) %>%
+  View()
+  
+```
+
+## Explore URLs
+
+First we will grab some of the wididata URLs to see what we can do with them.
+
+```{r}
+art_data %>%
+  filter(!is.na(object_wikidata_url)) %>%
+  filter(is_public_domain) %>%
+  select(object_id, object_wikidata_url, artist_wikidata_url) %>%
+  slice_head(n = 10)
+```
+
+I found this writeup on R packages to query [wikidata](https://www.lehir.net/how-to-query-wikidata-in-r/) and we will try them with a result found in the extract above. For example, the URL <https://www.wikidata.org/wiki/Q83545838> has a QID of `Q83545838`
+
+```{r}
+library(WikidataR)
+qid <- "Q83545838"
+item_res <- get_item(id = qid)
+item_res
+```
+
+The result shows there are 10 "claims" for this particular item. Looking at the web page for this entry, it appears that claims refer to the invidual data items on the page. We will try extracting informaiton from the "instance of" property
+
+
+```{r}
+prop <- "instance of"
+topic_res <- extract_claims(item_res, prop)
+get_names_from_properties(topic_res)
+```

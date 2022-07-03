@@ -1,0 +1,11 @@
+default:
+  dbname: "postgres"
+  db_host: "workshopdb"
+  db_port: 5432
+  db_user: "postgres"
+  db_password: "shiny"
+
+production:
+  db_host: "https://my-db-url.com"
+  db_user: "db_user"
+  db_password: "db_password"

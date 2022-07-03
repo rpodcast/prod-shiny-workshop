@@ -1,0 +1,154 @@
+---
+title: "GCV JSON explore"
+format:
+  html:
+    code-fold: true
+---
+
+## Introduction
+
+This document explores the JSON files returned by the Google Vision API when it was executed in batch mode.
+
+```{r}
+#| label: import
+#| message: false
+#| warning: false
+#| cache: true
+library(dplyr)
+library(dbplyr)
+library(ggplot2)
+library(tidyr)
+library(janitor)
+```
+
+Let's import an example JSON file with jsonlite
+
+```{r}
+gcv_file <- fs::path(here::here(), "prototyping/output_files_batch-0-output-1-to-1.json")
+
+res <- jsonlite::fromJSON(gcv_file)
+
+res2 <- tibble::tibble(res[[1]])
+
+names(res2)
+```
+
+We have a nested data frame, with list columns corresponding to each image API feature used, and another column with the URL of the image file processed. Let's explore each of these nested data frames, which probabaly require custom processing for each of them
+
+### labelAnnotations
+
+There is only a tidy data frame, so this is very easy to import
+
+```{r}
+res2[["labelAnnotations"]][[1]]
+```
+
+
+### imagePropertiesAnnotation
+
+Translate RGB color values to hexadecimal using a handy custom function found at [this gist](https://gist.github.com/mbannert/e9fcfa86de3b06068c83?permalink_comment_id=1349968#gistcomment-1349968)
+
+```{r}
+
+rgb2hex <- function(red, green, blue) {
+  grDevices::rgb(red, green, blue, maxColorValue = 255)
+}
+
+color_meta_df <- function() {
+  z <- as.data.frame(t(sapply(colors(distinct=T),col2rgb)))
+  names(z) <- c("red", "green", "blue")
+  z$color_name <- row.names(z)
+  z <- tibble::as_tibble(z)
+  return(z)
+}
+
+
+
+color_df <- res2[["imagePropertiesAnnotation"]][["dominantColors"]][["colors"]][[1]] %>%
+  tidyr::unnest(cols = color) %>%
+  rowwise() %>%
+  mutate(hexcode = rgb2hex(red, green, blue)) %>%
+  ungroup() %>%
+  left_join(color_meta_df(), by = c("red", "green", "blue"))
+```
+
+### localizedObjectAnnotations
+
+```{r}
+res2[["localizedObjectAnnotations"]][[1]] %>%
+  tidyr::unnest(cols = boundingPoly) %>%
+  tidyr::unnest(cols = normalizedVertices)
+```
+
+### cropHintsAnnotation
+
+```{r}
+res2[["cropHintsAnnotation"]][[1]][[1]] %>%
+  tidyr::unnest(cols = boundingPoly) %>%
+  tidyr::unnest(cols = vertices)
+```
+
+## Create importing funcrtion
+
+Now we have what we need to create a new function to automate the result processing. The return object will be a list of the data frames seen above, and the image file (file name version) will serve as a key for future merges with the overall metadata. The input would be the "unprocessed" result of the `jsonlite::fromJSON` 
+
+```{r}
+rgb2hex <- function(red, green, blue) {
+  grDevices::rgb(red, green, blue, maxColorValue = 255)
+}
+
+color_meta_df <- function() {
+  z <- as.data.frame(t(sapply(colors(distinct=T),col2rgb)))
+  names(z) <- c("red", "green", "blue")
+  z$color_name <- row.names(z)
+  z <- tibble::as_tibble(z)
+  return(z)
+}
+
+
+process_gcv <- function(x) {
+  res <- tibble::tibble(x[[1]])
+  
+  # obtain image path from bucket and the actual image file
+  image_gs_path <- res[["context"]] %>% pull("uri")
+  
+  image_file <- fs::path_file(image_gs_path)
+  
+  # labelAnnotations
+  label_annotations_df <- res[["labelAnnotations"]][[1]] %>%
+    mutate(image_gs_path = image_gs_path, image_file = image_file)
+  
+  # imagePropertiesAnnotation
+  image_properties_annotation_df <- res[["imagePropertiesAnnotation"]][["dominantColors"]][["colors"]][[1]] %>%
+    tidyr::unnest(cols = color) %>%
+    rowwise() %>%
+    mutate(hexcode = rgb2hex(red, green, blue)) %>%
+    ungroup() %>%
+    left_join(color_meta_df(), by = c("red", "green", "blue")) %>%
+    mutate(image_gs_path = image_gs_path, image_file = image_file)
+  
+  # localizedObjectAnnotations
+  object_annotations_df <- res[["localizedObjectAnnotations"]][[1]] %>%
+    tidyr::unnest(cols = boundingPoly) %>%
+    tidyr::unnest(cols = normalizedVertices) %>%
+    mutate(image_gs_path = image_gs_path, image_file = image_file)
+  
+  # cropHintsAnnotation
+  crop_hints_annotation_df <- res2[["cropHintsAnnotation"]][[1]][[1]] %>%
+    tidyr::unnest(cols = boundingPoly) %>%
+    tidyr::unnest(cols = vertices) %>%
+    mutate(image_gs_path = image_gs_path, image_file = image_file)
+  
+  return(
+    list(
+      label_annotations_df = label_annotations_df,
+      image_properties_annotation_df = image_properties_annotation_df,
+      object_annotations_df = object_annotations_df,
+      crop_hints_annotation_df = crop_hints_annotation_df
+    )
+  )
+}
+
+new_res <- process_gcv(res)
+```
+

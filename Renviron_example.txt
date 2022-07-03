@@ -1,0 +1,7 @@
+# Create a file called .Renviron and add your RStudio Connect API key
+# using the syntax below
+# Ensure you have created a account on the workshop server
+# by authenticating your GitHub account for SSO.
+# Contact workshop admins for the server address
+CONNECT_SERVER="https://someaddress.com"
+CONNECT_API_KEY="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
